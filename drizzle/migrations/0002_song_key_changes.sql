@@ -1,0 +1,1 @@
+ALTER TABLE public.songs ADD COLUMN key_changes text NOT NULL DEFAULT '';
