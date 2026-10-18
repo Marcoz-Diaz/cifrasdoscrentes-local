@@ -1,0 +1,11 @@
+- Auth uses username-only login mapped to a synthetic email (`<user>@cifras.app`) with auto-confirm on; never ask users for email.
+- Chord parsing/transposition lives in src/lib/chords.ts (pure, tested); UI renders via ChordSheet.
+- Scroll BPM adjustments use the pure helper in src/lib/sheet-controls.ts so input and step buttons share the same bounds.
+- Playlist annotations live on playlist_items and are keyed by source line; they never modify song content, so transpose and display options preserve highlights.
+- Responsive column and divider rules live in the pure viewer-settings helper; ChordSheet also enforces one column via CSS on phones to avoid hydration-time overflow.
+- Automatic version assignment is enforced by a database trigger with an identity lock, so all import and editor paths group duplicate songs consistently.
+- Playlist renaming is owner-only in RLS and guarded by a trigger; shared item edits remain accessible to members.
+- Batch imports reuse the file extractor and save reviewed rows sequentially, allowing retries without duplicating successful rows.
+- Theme defaults follow the system using CSS; a manual browser preference overrides it, and wake lock is scoped to active scrolling.
+- Offline playlists cache Supabase reads in localStorage via src/lib/offline.ts and a same-origin network-first service worker (public/sw.js, registered only outside preview), so data stays in sync online and opens offline.
+- Editor undo/redo uses the pure grouped history in src/lib/edit-history.ts; return points are source line numbers resolved by viewer-settings, stored on songs (author default) and playlist_items (per playlist).
